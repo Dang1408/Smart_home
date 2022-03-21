@@ -1,6 +1,6 @@
 # Source: https://codefresh.io/docs/docs/learn-by-example/golang/golang-hello-world/
 
-FROM golang:1.16-alpine AS build_base
+FROM golang:1.18-alpine AS build_base
 
 RUN apk add --no-cache git
 

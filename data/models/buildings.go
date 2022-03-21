@@ -3,7 +3,8 @@ package models
 import (
 	"encoding/json"
 
-	"github.com/Dang1408/Smart_home/data/api"
+	"github.com/Dang1408/Smart_homedata/data/api"
+
 	"gorm.io/gorm"
 )
 
@@ -72,7 +73,7 @@ func KickUser(db *gorm.DB, params interface{}) (interface{}, error) {
 	uid := payload["uid"].(string)
 	buildingName := payload["buildingName"].(string)
 
-	u := User{Uid: uid}
+	u := User{Iduser: uid}
 	b := Building{Name: buildingName}
 	if err := db.Model(&b).Association("Members").Delete(&u); err != nil {
 		return nil, err

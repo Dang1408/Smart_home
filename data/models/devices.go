@@ -1,7 +1,8 @@
 package models
 
 import (
-	"github.com/Dang1408/Smart_home/data/api"
+	"github.com/Dang1408/Smart_homedata/data/api"
+
 	"gorm.io/gorm"
 )
 

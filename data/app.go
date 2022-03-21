@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Dang1408/Smart_home/data/models"
+	"github.com/Dang1408/Smart_homedata/data/models"
+
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
@@ -101,7 +102,7 @@ func (a *App) getOutputDevices(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) getUserBuildings(w http.ResponseWriter, r *http.Request) {
-	a.handleRequest(w, r, map[string]string{}, models.GetUserBuildings)
+	a.handleRequest(w, r, map[string]string{}, models.GetBuilding)
 }
 
 func (a *App) inviteUser(w http.ResponseWriter, r *http.Request) {
