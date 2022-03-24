@@ -10,7 +10,7 @@ type User struct {
 	Iduser       string     `json:"iduser" gorm:"primaryKey"`
 	Email        string     `json: "email"`
 	Phone_number string     `json: "phonenumber"`
-	avatar       string     `json: "avatarURL"`
+	Avatar       string     `json: "avatarURL"`
 	Invitations  []Building `json:"invitations" gorm:"many2many:user_invitation;foreignKey:Iduser;joinForeignKey:UID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
@@ -27,7 +27,7 @@ func CreateUser(db *gorm.DB, params interface{}) (interface{}, error) {
 }
 
 func Getbuilding(db *gorm.DB, params interface{}) (interface{}, error) {
-	id_user := params.(map[string]interface{})["uid"]
+	id_user := params.(map[string]interface{})["iduser"]
 
 	var b []Building
 	///check query
@@ -46,7 +46,7 @@ func Getbuilding(db *gorm.DB, params interface{}) (interface{}, error) {
 }
 
 func GetInvitations(db *gorm.DB, params interface{}) (interface{}, error) {
-	id_user := params.(map[string]interface{})["uid"].(string)
+	id_user := params.(map[string]interface{})["iduser"].(string)
 
 	var b []Building
 	///get b
@@ -68,7 +68,6 @@ func AcceptInvitation(db *gorm.DB, params interface{}) (interface{}, error) {
 	user := User{Iduser: id_user}
 	building := Building{Name: build_name}
 
-	///WHy
 	err1 := db.Model(&user).
 		Association("Invitations").Delete(&building)
 

@@ -70,7 +70,7 @@ func InviteUser(db *gorm.DB, params interface{}) (interface{}, error) {
 
 func KickUser(db *gorm.DB, params interface{}) (interface{}, error) {
 	payload := params.(map[string]interface{})
-	uid := payload["uid"].(string)
+	uid := payload["iduser"].(string)
 	buildingName := payload["buildingName"].(string)
 
 	u := User{Iduser: uid}

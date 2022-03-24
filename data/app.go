@@ -43,22 +43,22 @@ func (a *App) ConnectPostgres(user, password, dbname, host string) {
 
 func (a *App) InitializeRoutes() {
 	a.Router = mux.NewRouter()
-	a.Router.HandleFunc("/acceptInvitation", a.acceptInvitation).Methods("POST")
-	a.Router.HandleFunc("/addBuildingDevice", a.addBuildingDevice).Methods("POST")
-	a.Router.HandleFunc("/closeBuilding", a.closeBuilding).Methods("POST")
-	a.Router.HandleFunc("/createUser", a.createUser).Methods("POST")
-	a.Router.HandleFunc("/createBuilding", a.createBuilding).Methods("POST")
-	a.Router.HandleFunc("/declineInvitation", a.declineInvitation).Methods("POST")
-	a.Router.HandleFunc("/getBuilding", a.getBuilding).Methods("POST")
-	a.Router.HandleFunc("/getInputDevices", a.getInputDevices).Methods("POST")
-	a.Router.HandleFunc("/getInvitations", a.getInvitations).Methods("POST")
-	a.Router.HandleFunc("/getOutputDevices", a.getOutputDevices).Methods("POST")
-	a.Router.HandleFunc("/getUserBuildings", a.getUserBuildings).Methods("POST")
-	a.Router.HandleFunc("/inviteUser", a.inviteUser).Methods("POST")
-	a.Router.HandleFunc("/kickUser", a.kickUser).Methods("POST")
-	a.Router.HandleFunc("/updateData", a.updateData).Methods("POST")
-	a.Router.HandleFunc("/updateProtection", a.updateProtection).Methods("POST")
-	a.Router.HandleFunc("/ping", a.ping).Methods("GET")
+	a.Router.HandleFunc("/acceptInvitation", a.acceptInvitation).Methods("POST")   ///tested
+	a.Router.HandleFunc("/addBuildingDevice", a.addBuildingDevice).Methods("POST") ///tested
+	a.Router.HandleFunc("/closeBuilding", a.closeBuilding).Methods("POST")         ////tested
+	a.Router.HandleFunc("/createUser", a.createUser).Methods("POST")               ///tested
+	a.Router.HandleFunc("/createBuilding", a.createBuilding).Methods("POST")       ///tested
+	a.Router.HandleFunc("/declineInvitation", a.declineInvitation).Methods("POST") ///tested
+	a.Router.HandleFunc("/getBuilding", a.getBuilding).Methods("POST")             ////tested
+	a.Router.HandleFunc("/getInputDevices", a.getInputDevices).Methods("POST")     ////tested
+	a.Router.HandleFunc("/getInvitations", a.getInvitations).Methods("POST")       ////tested
+	a.Router.HandleFunc("/getOutputDevices", a.getOutputDevices).Methods("POST")   ////tested
+	a.Router.HandleFunc("/getUserBuildings", a.getUserBuildings).Methods("POST")   ////tested
+	a.Router.HandleFunc("/inviteUser", a.inviteUser).Methods("POST")               ////tested
+	a.Router.HandleFunc("/kickUser", a.kickUser).Methods("POST")                   ////tested
+	a.Router.HandleFunc("/updateData", a.updateData).Methods("POST")               ////tested
+	a.Router.HandleFunc("/updateProtection", a.updateProtection).Methods("POST")   ////tested
+	a.Router.HandleFunc("/ping", a.ping).Methods("GET")                            ////tested
 }
 
 func (a *App) acceptInvitation(w http.ResponseWriter, r *http.Request) {

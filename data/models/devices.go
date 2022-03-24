@@ -10,10 +10,10 @@ type Device struct {
 	Building       string `json:"building"`
 	Name           string `json:"name" gorm:"primaryKey"`
 	Protection     bool   `json:"protection"`
-	Region         string `json:"region"`
-	Topic          string `json:"topic"`
+	Region         string `json:"region"` /// what room in a house?
+	Topic          string `json:"topic"`  /////feed_key
 	TriggeredValue string `json:"triggeredValue"`
-	Type           string `json:"deviceType"`
+	Type           string `json:"deviceType"` /////gas or temperature
 	Data           []Data `json:"data" gorm:"foreignKey:Device;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
