@@ -8,8 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/tvhhh/safe1/services/control/utils"
-
+	"github.com/Dang1408/Smart_home/connect/topics"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	log "github.com/sirupsen/logrus"
 
@@ -204,6 +203,12 @@ func (c *Client) request(msg []byte) {
 func (c *Client) respond(msg []byte) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
+	c.wsConn.WriteMessage(websocket.TextMessage, msg)
+}
+
+func (c *Client) ping() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.wsConn.WriteMessage(websocket.PingMessage, []byte{})
 }
 
@@ -266,7 +271,7 @@ func (c *Client) mqttMessageHandler(client mqtt.Client, msg mqtt.Message) {
 }
 
 func (c *Client) subscribeMqttTopic(topic string) error {
-	if utils.FindTopic(topic, utils.Topics) {
+	if topics.FindTopic(topic, topics.Topics) {
 		if err := c.subscribe(c.mqttClient, c.username, topic); err != nil {
 			return err
 		}
@@ -286,7 +291,7 @@ func (c *Client) subscribe(client mqtt.Client, username, topic string) error {
 }
 
 func (c *Client) unsubscribeMqttTopic(topic string) error {
-	if utils.FindTopic(topic, utils.Topics) {
+	if topics.FindTopic(topic, topics.Topics) {
 		if err := c.unsubscribe(c.mqttClient, c.username, topic); err != nil {
 			return err
 		}
@@ -306,7 +311,7 @@ func (c *Client) unsubscribe(client mqtt.Client, username, topic string) error {
 }
 
 func (c *Client) publishMqttTopic(topic string, msg string) error {
-	if utils.FindTopic(topic, utils.Topics) {
+	if topics.FindTopic(topic, topics.Topics) {
 		if err := c.publish(c.mqttClient, c.username, topic, msg); err != nil {
 			return err
 		}

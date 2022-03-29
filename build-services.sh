@@ -8,11 +8,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# docker build "$SCRIPT_DIR/control" -t safe1/control
-# if [ $? -ne 0 ]; then
-#   echo "Failed to build docker image safe1/control"
-#   exit 1
-# fi
+docker build "$SCRIPT_DIR/connect" -t smart_home_backend/connect
+if [ $? -ne 0 ]; then
+  echo "Failed to build docker image smart_home/connect"
+  exit 1
+fi
 
 # docker build "$SCRIPT_DIR/pipe" -t safe1/pipe
 # if [ $? -ne 0 ]; then
@@ -28,5 +28,5 @@ fi
 
 docker rmi $(docker images -f "dangling=true" -q)
 
-echo "Successfully built safe1 services"
+echo "Successfully built smart_home services"
 exit 0

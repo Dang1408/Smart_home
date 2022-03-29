@@ -1,11 +1,5 @@
 version: "3.9"
 services: 
-    # control:
-    #     image: safe1/control
-    #     pull_policy: never
-    #     restart: unless-stopped
-    #     env_file:
-    #         - ./adafruit.env
     data:
         image: smart_home_backend/data
         pull_policy: never
@@ -18,26 +12,26 @@ services:
             - AUTO_SERVICE_URL=http://auto:9010
         depends_on:
             - postgres
-    # pipe:
-    #     image: safe1/pipe
-    #     pull_policy: never
-    #     restart: unless-stopped
-    #     env_file:
-    #         - ./adafruit.env
-    #     environment:
-    #         - DATA_SERVICE_URL=http://data:8000
-    #     depends_on:
-    #         - data
-    # auto:
-    #     image: safe1/auto
-    #     pull_policy: never
-    #     restart: unless-stopped
-    #     env_file:
-    #         - ./adafruit.env
-    #     environment:
-    #         - DATA_SERVICE_URL=http://data:8000
-    #     depends_on:
-    #         - data
+    connect:
+        image: smart_home_backend/connect
+        pull_policy: never
+        restart: unless-stopped
+        env_file:
+            - ./adafruit.env
+        environment:
+            - DATA_SERVICE_URL=http://data:8000
+        depends_on:
+            - data
+    auto:
+        image: smart_home_backend/auto
+        pull_policy: never
+        restart: unless-stopped
+        env_file:
+            - ./adafruit.env
+        environment:
+            - DATA_SERVICE_URL=http://data:8000
+        depends_on:
+            - data
     postgres:
         image: postgres
         pull_policy: if_not_present
@@ -57,9 +51,8 @@ services:
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
         depends_on:
-            #- control
             - data
-            #- pipe
+            - connect
 volumes: 
     pgdata: 
         external: true
