@@ -31,7 +31,7 @@ func (a *App) connectAdafruit(broker, username, key string) {
 	a.pipe = a.setupMqttConfig(broker, username, key)
 
 	if token := a.pipe.Connect(); token.Wait() && token.Error() != nil {
-		log.WithFields(log.Fields{"error": token.Error()}).Error("Pipe connection failed")
+		log.WithFields(log.Fields{"error": token.Error()}).Error("Adafruit connection failed")
 		return
 	}
 	a.sub(a.pipe, username, topics.Topics)
@@ -57,13 +57,13 @@ func (a *App) setupMqttConfig(broker, username, key string) mqtt.Client {
 	opts.SetAutoReconnect(true)
 	opts.SetDefaultPublishHandler(a.messageHandler)
 	opts.SetOnConnectHandler(func(c mqtt.Client) {
-		log.Info("Pipe connected")
+		log.Info("Adafruit connected")
 	})
 	opts.SetConnectionLostHandler(func(c mqtt.Client, err error) {
-		log.WithFields(log.Fields{"error": err}).Error("Pipe disconnected")
+		log.WithFields(log.Fields{"error": err}).Error("Adafruit disconnected")
 	})
 	opts.SetReconnectingHandler(func(c mqtt.Client, opts *mqtt.ClientOptions) {
-		log.Info("Pipe reconnecting")
+		log.Info("Adafruit reconnecting")
 	})
 
 	return mqtt.NewClient(opts)

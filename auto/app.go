@@ -12,8 +12,8 @@ import (
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/tvhhh/safe1/services/auto/api"
-	"github.com/tvhhh/safe1/services/auto/utils"
+	"github.com/Dang1408/Smart_home/auto/api"
+	"github.com/Dang1408/Smart_home/auto/utils"
 )
 
 type App struct {
@@ -32,7 +32,7 @@ func (a *App) Initialize(broker, username, key string) {
 		return
 	}
 	a.username = username
-	a.sub(a.auto, username, "bk-iot-temp-humid")
+	a.sub(a.auto, username, "gas")
 	a.initializeRoutes()
 }
 
@@ -62,6 +62,8 @@ func (a *App) setupProtectionPolicy() {
 				"topic":      outputDevice["topic"].(string),
 				"type":       outputDevice["deviceType"].(string),
 				"protection": outputDevice["protection"].(bool),
+				////add triggervalue
+				"triggeredValue": outputDevice["triggeredValue"].(string),
 			}
 			a.protection[inputName] = append(a.protection[inputName].([]map[string]interface{}), outputInfo)
 		}
@@ -92,29 +94,42 @@ func (a *App) setupMqttConfig(broker, username, key string) mqtt.Client {
 
 func (a *App) messageHandler(client mqtt.Client, msg mqtt.Message) {
 	s := strings.Split(msg.Topic(), "/")
+	////fmt.Print("check topic: %d", s)
 	b := msg.Payload()
 	var data map[string]interface{}
 	json.Unmarshal(b, &data)
-	if topic := s[len(s)-1]; topic == "bk-iot-gas" {
+	if topic := s[len(s)-1]; topic == "gas" {
 		value, err := strconv.Atoi(data["data"].(string))
 		if err != nil {
 			log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
 		}
 		if value >= utils.GAS_THRESHOLD {
 			name := data["name"].(string)
-			a.triggerProtection(name)
-		}
-	} else if topic == "bk-iot-temp-humid" {
-		strVal := strings.Split(data["data"].(string), "-")[0]
-		value, err := strconv.Atoi(strVal)
-		if err != nil {
-			log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
-		}
-		if value >= utils.TEMP_THRESHOLD {
-			name := data["name"].(string)
+			///fmt.Print(data)
 			a.triggerProtection(name)
 		}
 	}
+	// else if topic == "humid" {
+	// 	strVal := strings.Split(data["data"].(string), "-")[0]
+	// 	value, err := strconv.Atoi(strVal)
+	// 	if err != nil {
+	// 		log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
+	// 	}
+	// 	if value >= utils.TEMP_THRESHOLD {
+	// 		name := data["name"].(string)
+	// 		a.triggerProtection(name)
+	// 	}
+	// } else if topic == "temp" {
+	// 	strVal := strings.Split(data["data"].(string), "-")[0]
+	// 	value, err := strconv.Atoi(strVal)
+	// 	if err != nil {
+	// 		log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
+	// 	}
+	// 	if value >= utils.TEMP_THRESHOLD {
+	// 		name := data["name"].(string)
+	// 		a.triggerProtection(name)
+	// 	}
+	// }
 }
 
 func (a *App) triggerProtection(inputName string) {
@@ -123,14 +138,17 @@ func (a *App) triggerProtection(inputName string) {
 		log.WithFields(log.Fields{"name": inputName}).Warn("Input device not found")
 		return
 	}
-
 	for _, device := range deviceList {
+		////fmt.Print("CHECK TRIGGER PROTECTION ")
+		////fmt.Print(device)
 		if protection, ok := device["protection"].(bool); ok && protection {
 			topic := device["topic"].(string)
 			deviceName := device["name"].(string)
 			deviceType := device["type"].(string)
+			/////devices doesn't have triggervalue
 			value := device["triggeredValue"].(string)
 			msg := utils.GetProtectionMessage(deviceName, deviceType, value)
+			/////fmt.Print("CHECK TRIGGER PROTECTION 2 ")
 			if utils.FindTopic(topic, utils.Topics) {
 				if err := a.pub(a.auto, a.username, topic, msg); err != nil {
 					log.WithFields(log.Fields{"error": err}).Error("Error publishing message")
