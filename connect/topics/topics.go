@@ -1,18 +1,16 @@
 package topics
 
 var Topics = []string{
-	//"humid",
-	// "temp",
 	"buzzer",
-	"servo",
+	"led",
 	"gas",
 }
 
-// var Topics1 = []string{
-// 	"bk-iot-relay",
-// 	"bk-iot-servo",
-// 	"bk-iot-gas",
-// }
+var Topics1 = []string{
+	"buzzer",
+	"led",
+	"temp",
+}
 
 func FindTopic(topic string, topicList []string) bool {
 	for _, t := range topicList {

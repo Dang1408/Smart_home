@@ -35,6 +35,7 @@ func (a *App) connectAdafruit(broker, username, key string) {
 		return
 	}
 	a.sub(a.pipe, username, topics.Topics)
+	a.sub(a.pipe, username, topics.Topics1)
 }
 
 ////Client
@@ -72,6 +73,7 @@ func (a *App) messageHandler(client mqtt.Client, msg mqtt.Message) {
 	log.WithFields(log.Fields{"topic": msg.Topic()}).Info("Message received")
 
 	var payload map[string]interface{}
+
 	if err := json.Unmarshal(msg.Payload(), &payload); err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("Invalid message format")
 		return

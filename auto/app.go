@@ -33,6 +33,7 @@ func (a *App) Initialize(broker, username, key string) {
 	}
 	a.username = username
 	a.sub(a.auto, username, "gas")
+	a.sub(a.auto, username, "temp")
 	a.initializeRoutes()
 }
 
@@ -108,28 +109,27 @@ func (a *App) messageHandler(client mqtt.Client, msg mqtt.Message) {
 			///fmt.Print(data)
 			a.triggerProtection(name)
 		}
+		// } else if topic == "humid" {
+		// 	strVal := strings.Split(data["data"].(string), "-")[0]
+		// 	value, err := strconv.Atoi(strVal)
+		// 	if err != nil {
+		// 		log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
+		// 	}
+		// 	if value >= utils.TEMP_THRESHOLD {
+		// 		name := data["name"].(string)
+		// 		a.triggerProtection(name)
+		// 	}
+	} else if topic == "temp" {
+		strVal := strings.Split(data["data"].(string), "-")[0]
+		value, err := strconv.Atoi(strVal)
+		if err != nil {
+			log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
+		}
+		if value >= utils.TEMP_THRESHOLD {
+			name := data["name"].(string)
+			a.triggerProtection(name)
+		}
 	}
-	// else if topic == "humid" {
-	// 	strVal := strings.Split(data["data"].(string), "-")[0]
-	// 	value, err := strconv.Atoi(strVal)
-	// 	if err != nil {
-	// 		log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
-	// 	}
-	// 	if value >= utils.TEMP_THRESHOLD {
-	// 		name := data["name"].(string)
-	// 		a.triggerProtection(name)
-	// 	}
-	// } else if topic == "temp" {
-	// 	strVal := strings.Split(data["data"].(string), "-")[0]
-	// 	value, err := strconv.Atoi(strVal)
-	// 	if err != nil {
-	// 		log.WithFields(log.Fields{"error": err}).Error("Error parsing message")
-	// 	}
-	// 	if value >= utils.TEMP_THRESHOLD {
-	// 		name := data["name"].(string)
-	// 		a.triggerProtection(name)
-	// 	}
-	// }
 }
 
 func (a *App) triggerProtection(inputName string) {
@@ -153,6 +153,10 @@ func (a *App) triggerProtection(inputName string) {
 				if err := a.pub(a.auto, a.username, topic, msg); err != nil {
 					log.WithFields(log.Fields{"error": err}).Error("Error publishing message")
 				}
+			} else if utils.FindTopic(topic, utils.Topics1) {
+				if err := a.pub(a.auto, a.username, topic, msg); err != nil {
+					log.WithFields(log.Fields{"error": err}).Error("Error publishing message")
+				}
 			}
 		}
 	}
@@ -170,8 +174,9 @@ func (a *App) sub(client mqtt.Client, username string, topics ...string) error {
 }
 
 func (a *App) pub(client mqtt.Client, username, topic string, msg interface{}) error {
-	b, _ := json.Marshal(msg)
-	if token := client.Publish(fmt.Sprintf("%s/feeds/%s", username, topic), 0, false, string(b)); token.Wait() && token.Error() != nil {
+	////changed
+	message, _ := json.Marshal(msg)
+	if token := client.Publish(fmt.Sprintf("%s/feeds/%s", username, topic), 0, false, string(message)); token.Wait() && token.Error() != nil {
 		return token.Error()
 	}
 	log.WithFields(log.Fields{"topic": topic}).Info("Published")
@@ -198,7 +203,7 @@ func (a *App) updateProtectionPolicy(w http.ResponseWriter, r *http.Request) {
 	outputDevices := make([]map[string]interface{}, 0)
 	for _, device := range body {
 		deviceType := device["deviceType"].(string)
-		if deviceType == "gas" || deviceType == "temperature" {
+		if deviceType == "gas" || deviceType == "temp" {
 			inputDevices = append(inputDevices, device["name"].(string))
 		} else {
 			deviceInfo := map[string]interface{}{

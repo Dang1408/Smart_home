@@ -13,10 +13,10 @@ var TriggerProtection = map[string]interface{}{
 	// 	"id":   "11",
 	// 	"unit": "",
 	// },
-	// "sprinkler": map[string]string{
-	// 	"id":   "11",
-	// 	"unit": "",
-	// },
+	"sprinkler": map[string]string{
+		"id":   "11",
+		"unit": "",
+	},
 	"servo": map[string]string{
 		"id":   "17",
 		"unit": "degree",
@@ -25,14 +25,10 @@ var TriggerProtection = map[string]interface{}{
 
 func GetProtectionMessage(deviceName, deviceType string, triggeredValue string) map[string]string {
 	////fmt.Print("message")
-	if msgTemplate, ok := TriggerProtection[deviceType].(map[string]string); ok {
-		return map[string]string{
-			"id":   msgTemplate["id"],
-			"name": deviceName,
-			"data": triggeredValue,
-			"unit": msgTemplate["unit"],
-		}
-	}
+	///return triggeredValue
 
-	return nil
+	return map[string]string{
+		"name": deviceName,
+		"data": triggeredValue,
+	}
 }

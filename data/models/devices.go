@@ -56,7 +56,7 @@ func GetInputDevices(db *gorm.DB, params interface{}) (interface{}, error) {
 	var d []Device
 	if err := db.
 		Model(&Device{}).
-		Where("type = 'gas' or type = 'temperature'").
+		Where("type = 'gas' or type = 'temp'").
 		Find(&d).Error; err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func GetOutputDevices(db *gorm.DB, params interface{}) (interface{}, error) {
 	var d []Device
 	if err := db.
 		Model(&Device{}).
-		Where("building = ? and region = ? and type <> 'gas' and type <> 'temperature'", building, region).
+		Where("building = ? and region = ? and type <> 'gas' and type <> 'temp'", building, region).
 		Find(&d).Error; err != nil {
 		return nil, err
 	}
