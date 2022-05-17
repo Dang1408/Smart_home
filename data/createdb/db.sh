@@ -1,5 +1,4 @@
 #!/bin/sh
-
 psql -U "$POSTGRES_USER" <<-EOSQL
     create database smart_home;
     create user vozer with password 'wibuisthebest';

@@ -300,7 +300,7 @@ func (c *Client) unsubscribeMqttTopic(topic string) error {
 			return err
 		}
 	} else if topics.FindTopic(topic, topics.Topics1) {
-		if err := c.subscribe(c.mqttClient, c.username, topic); err != nil {
+		if err := c.unsubscribe(c.mqttClient, c.username, topic); err != nil {
 			return err
 		}
 	}
@@ -324,7 +324,7 @@ func (c *Client) publishMqttTopic(topic string, msg string) error {
 			return err
 		}
 	} else if topics.FindTopic(topic, topics.Topics1) {
-		if err := c.subscribe(c.mqttClient, c.username, topic); err != nil {
+		if err := c.publish(c.mqttClient, c.username, topic, msg); err != nil {
 			return err
 		}
 	}
