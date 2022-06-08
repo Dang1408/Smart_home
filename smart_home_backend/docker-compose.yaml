@@ -1,0 +1,65 @@
+version: "3.9"
+services: 
+    control:
+        image: safe1/control
+        pull_policy: never
+        restart: unless-stopped
+        env_file:
+            - ./adafruit.env
+    data:
+        image: safe1/data
+        pull_policy: never
+        restart: unless-stopped
+        environment:
+            - PSQL_USERNAME=safe1admin
+            - PSQL_PASSWORD=securepassword
+            - PSQL_DB_NAME=safe1
+            - PSQL_HOSTNAME=postgres
+            - AUTO_SERVICE_URL=http://auto:9010
+        depends_on:
+            - postgres
+    pipe:
+        image: safe1/pipe
+        pull_policy: never
+        restart: unless-stopped
+        env_file:
+            - ./adafruit.env
+        environment:
+            - DATA_SERVICE_URL=http://data:8000
+        depends_on:
+            - data
+    auto:
+        image: safe1/auto
+        pull_policy: never
+        restart: unless-stopped
+        env_file:
+            - ./adafruit.env
+        environment:
+            - DATA_SERVICE_URL=http://data:8000
+        depends_on:
+            - data
+    postgres:
+        image: postgres
+        pull_policy: if_not_present
+        restart: unless-stopped
+        environment: 
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=psql
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+            - ./data/initdb:/docker-entrypoint-initdb.d/
+    nginx:
+        image: nginx
+        pull_policy: if_not_present
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        depends_on:
+            - control
+            - data
+            - pipe
+volumes: 
+    pgdata: 
+        external: true

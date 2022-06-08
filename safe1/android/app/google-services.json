@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1093645070689",
+    "project_id": "safe1-ea14d",
+    "storage_bucket": "safe1-ea14d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093645070689:android:0470b725050cab0c429520",
+        "android_client_info": {
+          "package_name": "com.safe1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093645070689-s9l0gnh6pmvgkgpej4ebscbcv555llpj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.safe1",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1093645070689-he5i4cbgd5hpulhg0tdmsp5c8j5sjkaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpDTnCxOllCAEpvufNcmq2xsoSxLRhKJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093645070689-he5i4cbgd5hpulhg0tdmsp5c8j5sjkaa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
