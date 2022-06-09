@@ -498,9 +498,9 @@ class MyBuildings extends React.Component<Props, MyBuildingState> {
                 selectedValue={this.state.addingDevice.deviceType}
                 onValueChange={(itemValue) => this.onChangeDeviceType(itemValue)}>
                 <Picker.Item label="FIRE ALARM" value="buzzer" />
-                <Picker.Item label="EXTRACTOR FAN" value="fan" />
+                {/* <Picker.Item label="EXTRACTOR FAN" value="fan" /> */}
                 <Picker.Item label="GAS SENSOR" value="gas" />
-                <Picker.Item label="POWER SYSTEM" value="power" />
+                {/* <Picker.Item label="POWER SYSTEM" value="power" /> */}
                 <Picker.Item label="SMART DOOR" value="servo" />
                 <Picker.Item label="SPRINKLER" value="sprinkler" />
                 <Picker.Item label="TEMPERATURE SENSOR" value="temperature" />

@@ -86,17 +86,19 @@ class OnProtection extends React.Component<Props, OnProtectionState>  {
                 };
                 console.log("msg1" + JSON.stringify(msg))
                 this.props.updateProtection(msg);
-                let value
-                if (response.deviceType === "buzzer"){
-                    value = {name : response.name, data: "B0" }
-                }else if (response.deviceType === "sprinkler"){
-                    value = {name : response.name, data: "W0" }
-                }else if (response.deviceType === "servo"){
-                    value = {name : response.name, data: "CLOSE" }
-                }else if (response.deviceType === "led"){
-                    value = {name : response.name, data: "L0" }
+                if (response.protection === false){
+                    let value
+                    if (response.deviceType === "buzzer"){
+                        value = {name : response.name, data: "B0" }
+                    }else if (response.deviceType === "sprinkler"){
+                        value = {name : response.name, data: "W0" }
+                    }else if (response.deviceType === "servo"){
+                        value = {name : response.name, data: "CLOSE" }
+                    }else if (response.deviceType === "led"){
+                        value = {name : response.name, data: "L0" }
+                    }
+                    ControlService.pub(response.topic, value)
                 }
-                ControlService.pub(response.topic, value)
             }
             }).catch(err => console.error(err));
         })

@@ -148,9 +148,9 @@ class CreateBuilding extends React.Component<Props, CustomState> {
             selectedValue={item.deviceType}
             onValueChange={(itemValue) => this.onChangeDeviceType(index)(itemValue)}>
             <Picker.Item label="FIRE ALARM" value="buzzer" />
-            <Picker.Item label="EXTRACTOR FAN" value="fan" />
+            {/* <Picker.Item label="EXTRACTOR FAN" value="fan" /> */}
             <Picker.Item label="GAS SENSOR" value="gas" />
-            <Picker.Item label="POWER SYSTEM" value="power" />
+            {/* <Picker.Item label="POWER SYSTEM" value="power" /> */}
             <Picker.Item label="SMART DOOR" value="servo" />
             <Picker.Item label="SPRINKLER" value="sprinkler" />
             <Picker.Item label="TEMPERATURE SENSOR" value="temperature" />
